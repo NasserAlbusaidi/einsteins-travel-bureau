@@ -130,6 +130,7 @@ const COLORS = {
   stampGreen: '#3c6447',
   stampRed: '#a92525',
   mustardDark: '#a07d2e',
+  olive: '#6b7043',
 } as const
 
 const HAZARD_COLOR: Record<BrochureCopy['hazard'], string> = {

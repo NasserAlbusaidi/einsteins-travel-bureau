@@ -92,7 +92,11 @@ export function SpacetimeDiagram({ travelerVelocity, trajectory: trajProp, onVel
   const handlePointerDown = (e: React.PointerEvent) => {
     if (!onVelocityChange) return
     e.preventDefault()
-    ;(e.currentTarget as Element).setPointerCapture(e.pointerId)
+    try {
+      ;(e.currentTarget as Element).setPointerCapture(e.pointerId)
+    } catch {
+      // Synthetic/programmatic pointers may not be capturable — not fatal.
+    }
     setDragging(true)
   }
 
@@ -105,7 +109,11 @@ export function SpacetimeDiagram({ travelerVelocity, trajectory: trajProp, onVel
 
   const handlePointerUp = (e: React.PointerEvent) => {
     if (!dragging) return
-    ;(e.currentTarget as Element).releasePointerCapture(e.pointerId)
+    try {
+      ;(e.currentTarget as Element).releasePointerCapture(e.pointerId)
+    } catch {
+      // See setPointerCapture — release may fail for the same reason.
+    }
     setDragging(false)
   }
 
