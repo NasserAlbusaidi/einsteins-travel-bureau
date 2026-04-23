@@ -89,6 +89,12 @@ export function formatNumber(x: Scalar, digits = 6): string {
 /** γ factor — always a positive dimensionless number. */
 export function formatGamma(gamma: Scalar): string {
   const g = d(gamma)
+  // When γ is indistinguishably close to 1 (everyday speeds), 6 fixed digits
+  // hide the physics. Show the tiny excess explicitly: "1 + 3.336e-10".
+  const excess = g.minus(1)
+  if (g.gte(1) && excess.abs().lt('1e-4') && !excess.isZero()) {
+    return `1 + ${excess.toExponential(3)}`
+  }
   if (g.lt(10)) return g.toFixed(6)
   if (g.lt('1e4')) return sig(g, 5)
   return g.toExponential(4)

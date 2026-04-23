@@ -45,8 +45,8 @@ export function AgeChart({ result }: Props) {
           </div>
         </div>
       </div>
-      <div className="h-64 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-64 w-full min-w-0">
+        <ResponsiveContainer width="100%" height={256} debounce={50}>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 24, left: 8 }}>
             <CartesianGrid stroke="#c9b584" strokeOpacity={0.4} />
             <XAxis
