@@ -8,6 +8,8 @@
 > Relativistic Itineraries & Bespoke Expeditions.
 > Licensed since 1905 · Lightspeed never exceeded, always approached.
 
+![The Bureau Wall-Map — atlas of relativistic itineraries with destination cards](docs/hero.png)
+
 A high-precision time-dilation sandbox disguised as a vintage cosmic travel agency. Every control is a booking form. Every result is a boarding pass. The real physics lives one click away under **How the Trip Was Calculated**.
 
 Built with Vite · React 19 · TypeScript · Tailwind · decimal.js at 50-digit precision.
