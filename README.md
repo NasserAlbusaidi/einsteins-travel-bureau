@@ -1,3 +1,8 @@
+**[Launch the bureau →](https://nasseralbusaidi.github.io/einsteins-travel-bureau/)**
+
+[![CI](https://github.com/NasserAlbusaidi/einsteins-travel-bureau/actions/workflows/ci.yml/badge.svg)](https://github.com/NasserAlbusaidi/einsteins-travel-bureau/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 # Einstein's Travel Bureau
 
 > Relativistic Itineraries & Bespoke Expeditions.
@@ -11,7 +16,7 @@ Built with Vite · React 19 · TypeScript · Tailwind · decimal.js at 50-digit 
 
 ```bash
 npm install
-npm run dev        # → http://localhost:5173
+npm run dev        # → http://localhost:5173/einsteins-travel-bureau/
 npm run typecheck
 npm test           # 68 physics tests
 npm run build
