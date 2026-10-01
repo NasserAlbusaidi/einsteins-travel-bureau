@@ -20,20 +20,20 @@ export function MathDrawer({ result, split, traveler, reference }: Props) {
   const homeMass = new Decimal(reference.mass)
 
   return (
-    <details className="group border-2 border-ink/20 rounded-sm bg-paper-light/70">
-      <summary className="cursor-pointer list-none flex items-center justify-between px-4 py-3">
+    <details className="group rounded-2xl bg-white/50 ring-1 ring-inset ring-ink/15">
+      <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-3.5">
         <span>
-          <span className="block font-semibold text-ink">🧮 Show the math</span>
-          <span className="block text-sm text-ink-softer">
+          <span className="block font-semibold text-ink">Show the math</span>
+          <span className="block text-sm text-ink-3">
             The actual equations, at 50-digit precision. Optional — for the curious.
           </span>
         </span>
-        <span className="font-mono text-xl text-terracotta-dark group-open:rotate-45 transition-transform" aria-hidden>
+        <span className="grid place-items-center w-8 h-8 shrink-0 rounded-full bg-ink text-gold-300 font-mono text-lg group-open:rotate-45 transition-transform" aria-hidden>
           +
         </span>
       </summary>
 
-      <div className="px-4 pb-4 border-t border-dashed border-ink/20 pt-4 space-y-5 text-ink-light">
+      <div className="px-4 pb-5 border-t border-dashed border-ink/20 pt-4 space-y-6 text-ink-2">
         <Section title="Speed (special relativity)">
           <p className="text-sm">
             A moving clock ticks slower by the Lorentz factor γ. Below about 1% of light speed γ is so close to 1
@@ -120,7 +120,7 @@ function signed(x: Decimal): string {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h4 className="font-display text-lg text-terracotta-dark mb-2">{title}</h4>
+      <h4 className="font-display text-lg font-semibold text-ink mb-2">{title}</h4>
       <div className="space-y-2">{children}</div>
     </div>
   )
@@ -132,7 +132,7 @@ function Grid({ children }: { children: React.ReactNode }) {
 
 function Formula({ children }: { children: React.ReactNode }) {
   return (
-    <div className="font-mono text-[13px] text-ink bg-paper-dark/40 border border-ink/15 rounded-sm px-3 py-2 overflow-x-auto">
+    <div className="font-mono text-[13px] text-cream bg-night-900 rounded-xl px-3.5 py-2.5 overflow-x-auto">
       {children}
     </div>
   )
@@ -140,8 +140,8 @@ function Formula({ children }: { children: React.ReactNode }) {
 
 function Kv({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 border-b border-dashed border-ink/15 pb-1">
-      <span className="text-sm text-ink-softer">{label}</span>
+    <div className="flex items-baseline justify-between gap-3 border-b border-dashed border-ink/15 pb-1.5">
+      <span className="text-sm text-ink-3">{label}</span>
       <span className="font-mono text-[13px] text-ink tabular-nums text-right [overflow-wrap:anywhere]">{value}</span>
     </div>
   )

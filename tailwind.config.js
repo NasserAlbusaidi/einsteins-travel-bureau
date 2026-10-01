@@ -4,53 +4,70 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"DM Serif Display"', 'Georgia', 'serif'],
-        sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        display: ['"Fraunces Variable"', 'Georgia', 'serif'],
+        sans: ['"Jost Variable"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       colors: {
-        paper: {
-          DEFAULT: '#f1e6ce',
-          light: '#f8f0dc',
-          dark: '#e2d1a9',
-          darker: '#c9b584',
+        // The night sky the whole bureau sits in.
+        night: {
+          950: '#05070f',
+          900: '#090d20',
+          850: '#0d1330',
+          800: '#121a3c',
+          700: '#1b2550',
+          600: '#2a3567',
+          500: '#3e4a83',
+        },
+        // Card stock for tickets and posters.
+        cream: {
+          DEFAULT: '#f4ead4',
+          50: '#fbf6ea',
+          200: '#eadcbb',
+          300: '#dcc89c',
+        },
+        // Deco brass: brand chrome, rules, ornaments.
+        gold: {
+          DEFAULT: '#e3b04b',
+          300: '#f3d38a',
+          600: '#b88a2c',
+          700: '#8c6820',
+        },
+        // Colour semantics used everywhere: coral is YOU, teal is HOME.
+        you: {
+          DEFAULT: '#ff7b54',
+          300: '#ffa384',
+          600: '#e0582f',
+          700: '#b2401c',
+        },
+        home: {
+          DEFAULT: '#4fd1c5',
+          300: '#8be6dc',
+          600: '#22a094',
+          700: '#126b62',
+        },
+        mist: {
+          100: '#dde1f2',
+          200: '#c3c9e6',
+          300: '#a3abd3',
+          400: '#8690bf',
+          500: '#646e9f',
         },
         ink: {
-          DEFAULT: '#1a2332',
-          light: '#425066',
-          softer: '#6c7a8f',
-          faint: '#9ba7b8',
+          DEFAULT: '#161a33',
+          2: '#41465f',
+          3: '#6a6e86',
         },
-        terracotta: {
-          DEFAULT: '#b5482d',
-          dark: '#8e3620',
-          light: '#d46a4c',
-        },
-        olive: {
-          DEFAULT: '#6b7043',
-          dark: '#4e5230',
-          light: '#8a8f5c',
-        },
-        mustard: {
-          DEFAULT: '#c89f4a',
-          dark: '#a07d2e',
-        },
-        stamp: {
-          red: '#a92525',
-          blue: '#2c4c7c',
-          green: '#3c6447',
-        },
+        alarm: '#ff5d5d',
+        go: '#7ddc9a',
       },
       boxShadow: {
-        ticket: '0 1px 0 rgba(26,35,50,0.08), 0 8px 24px -12px rgba(26,35,50,0.18)',
-        stamp: '0 1px 0 rgba(26,35,50,0.08)',
+        ticket: '0 1px 0 rgba(255,255,255,0.4) inset, 0 30px 60px -20px rgba(0,0,0,0.65), 0 12px 24px -12px rgba(0,0,0,0.5)',
+        glow: '0 0 0 1px rgba(227,176,75,0.35), 0 0 40px -8px rgba(227,176,75,0.35)',
+        panel: '0 30px 60px -30px rgba(0,0,0,0.7)',
       },
-      backgroundImage: {
-        'paper-grain':
-          "radial-gradient(rgba(139,115,78,0.08) 1px, transparent 1px), radial-gradient(rgba(139,115,78,0.05) 1px, transparent 1px)",
-      },
-      backgroundSize: {
-        'grain': '14px 14px, 20px 20px',
+      letterSpacing: {
+        deco: '0.32em',
       },
     },
   },

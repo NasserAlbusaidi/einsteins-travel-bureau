@@ -5,6 +5,7 @@
  */
 import Decimal from 'decimal.js'
 import { C } from './physics/constants'
+import type { Body } from './physics/bodies'
 
 export interface Scale {
   toPos(value: Decimal): number
@@ -75,3 +76,12 @@ export const speedScale: Scale = {
 
 /** Trip length (home clock): 1 minute → 10,000 years. */
 export const durationScale = logScale(new Decimal(60), new Decimal('3.15576e11'))
+
+/**
+ * Height above a body: logarithmic from 1 m up to the body's limit. Bodies with
+ * a surface reserve the bottom of the slider for "on the ground"; black holes
+ * have no ground, so they start at 1 m.
+ */
+export function heightScale(body: Body): Scale {
+  return logScale(new Decimal(1), body.maxHeight, body.kind === 'black-hole' ? 0 : 0.03)
+}

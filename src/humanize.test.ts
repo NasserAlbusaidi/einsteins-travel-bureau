@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import Decimal from 'decimal.js'
 import {
+  boardDuration,
   humanDistance,
   humanDuration,
   humanMass,
@@ -72,5 +73,27 @@ describe('humanDistance / humanMass', () => {
     expect(humanMass(EARTH_MASS)).toBe('1 × the Earth')
     expect(humanMass(SUN_MASS.times('4.297e6'))).toBe('4.3 million × the Sun')
     expect(humanMass(0)).toBe('nothing')
+  })
+})
+
+describe('boardDuration', () => {
+  it('uses short upper-case units with 3 significant figures', () => {
+    expect(boardDuration(JULIAN_YEAR_SECONDS.times('9.7123'))).toBe('9.71 YRS')
+    expect(boardDuration(new Decimal(3600))).toBe('1 HR')
+    expect(boardDuration(new Decimal('3.85e-5'))).toBe('38.5 MICROSEC')
+    expect(boardDuration(new Decimal(340 * 86400))).toBe('340 DAYS')
+    expect(boardDuration(JULIAN_YEAR_SECONDS.times(12345))).toBe('12,345 YRS')
+    expect(boardDuration(JULIAN_YEAR_SECONDS.times('3.17e6'))).toBe('3.17M YRS')
+  })
+
+  it('handles nothing and next to nothing', () => {
+    expect(boardDuration(0)).toBe('NONE')
+    expect(boardDuration(new Decimal('1e-15'))).toBe('< 1 PICOSEC')
+  })
+
+  it('always fits a 13-character board column', () => {
+    for (let e = -14; e < 20; e += 0.37) {
+      expect(boardDuration(new Decimal(10).pow(e)).length).toBeLessThanOrEqual(13)
+    }
   })
 })

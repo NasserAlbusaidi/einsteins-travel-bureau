@@ -76,16 +76,19 @@ const QUESTIONS: readonly { q: string; a: React.ReactNode }[] = [
 
 export function Faq() {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="grid gap-3 lg:grid-cols-2 items-start">
       {QUESTIONS.map(({ q, a }) => (
-        <details key={q} className="group paper-card">
+        <details key={q} className="group panel !rounded-2xl open:shadow-glow transition-shadow">
           <summary className="cursor-pointer list-none flex items-center justify-between gap-4 px-5 py-4">
-            <span className="font-semibold text-ink text-lg">{q}</span>
-            <span className="font-mono text-xl text-terracotta-dark group-open:rotate-45 transition-transform" aria-hidden>
+            <span className="font-display text-lg sm:text-xl text-cream leading-snug">{q}</span>
+            <span
+              className="grid place-items-center w-8 h-8 shrink-0 rounded-full ring-1 ring-gold/50 text-gold-300 font-mono text-lg group-open:rotate-45 group-open:bg-gold group-open:text-night-900 transition-all"
+              aria-hidden
+            >
               +
             </span>
           </summary>
-          <p className="px-5 pb-5 -mt-1 text-ink-light leading-relaxed">{a}</p>
+          <p className="px-5 pb-5 -mt-1 text-mist-200 leading-relaxed">{a}</p>
         </details>
       ))}
     </div>
