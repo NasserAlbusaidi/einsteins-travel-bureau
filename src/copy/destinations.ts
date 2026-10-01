@@ -1,141 +1,122 @@
 /**
- * Travel-bureau brochure copy for each physics scenario.
- * Keyed by scenario id. Add a new entry here when a scenario is added.
+ * Travel-bureau brochure copy for each preset trip, keyed by scenario id.
+ * Add an entry here whenever a scenario is added to physics/scenarios.ts.
  */
 
+export type Hazard = 'SAFE' | 'CAUTION' | 'EXTREME' | 'FATAL'
+export type Palette = 'sky' | 'sun' | 'dusk' | 'void' | 'ember'
+
 export interface BrochureCopy {
-  readonly tagline: string
-  readonly region: string
-  readonly hazard: 'SAFE' | 'CAUTION' | 'EXTREME' | 'FATAL'
-  readonly sticker: string
-  readonly blurb: string
-  readonly palette: 'sky' | 'sun' | 'dusk' | 'void' | 'ember'
+  readonly emoji: string
+  /** Plain name everyone recognises. */
+  readonly title: string
+  /** The bureau's marketing name. */
+  readonly package: string
+  readonly hazard: Hazard
+  readonly palette: Palette
+  /** One-sentence pitch, no jargon. */
+  readonly pitch: string
+  /** What this trip teaches, shown on the boarding pass. */
+  readonly lesson: string
 }
 
 export const DESTINATIONS: Record<string, BrochureCopy> = {
-  gps: {
-    tagline: 'Low-Orbit Express',
-    region: 'Medium Earth Orbit',
-    hazard: 'SAFE',
-    sticker: 'SIGNATURE PACKAGE',
-    blurb:
-      'Circle the Earth twice a day at a comfortable 3.9 km/s. Our signature daytrip — gravity relaxes just enough to age you faster than the groundlings below.',
-    palette: 'sky',
-  },
-  iss: {
-    tagline: 'The Orbital Weekender',
-    region: 'Low Earth Orbit',
-    hazard: 'CAUTION',
-    sticker: 'FREE FALL INCLUDED',
-    blurb:
-      'Skim the upper atmosphere aboard a veteran orbital station. You will weigh nothing and age slightly less than your spouse. 16 sunrises a day — towels provided.',
-    palette: 'sky',
-  },
-  'scott-kelly': {
-    tagline: 'Year-Long Orbital Retreat',
-    region: 'Low Earth Orbit',
-    hazard: 'CAUTION',
-    sticker: 'EXTENDED STAY',
-    blurb:
-      '340 nights aboard the station while your twin holds down the Earth. You come back a few milliseconds younger and with space-knees. Our Longest Ongoing Package.',
-    palette: 'dusk',
-  },
-  flight: {
-    tagline: 'Pacific Business Class',
-    region: 'Stratosphere',
-    hazard: 'SAFE',
-    sticker: 'EVERYDAY LUXURY',
-    blurb:
-      'San Francisco to Tokyo at 10 km altitude. Gravitational altitude juuust wins against cabin speed — you disembark having aged a few nanoseconds extra. Drinks included.',
-    palette: 'sun',
-  },
   'twin-paradox': {
-    tagline: 'Alpha Centauri Round-Trip',
-    region: 'Interstellar',
+    emoji: '🚀',
+    title: 'Twin paradox',
+    package: 'Alpha Centauri Round-Trip',
     hazard: 'EXTREME',
-    sticker: 'FLAGSHIP VOYAGE',
-    blurb:
-      'A 4.37-light-year getaway at ninety percent the speed of light. Leave Earth, wave to Proxima, come home to find a decade has passed without you. Our most photographed trip.',
     palette: 'ember',
-  },
-  'millers-planet': {
-    tagline: 'Gargantua Resort & Spa',
-    region: 'Supermassive Event Horizon',
-    hazard: 'FATAL',
-    sticker: 'LIMITED AVAILABILITY',
-    blurb:
-      "Hover above a hundred-million solar mass black hole where one hour on the sand equals seven Earth years. Waves are exceptional. Tides: catastrophic.",
-    palette: 'void',
+    pitch: 'Fly to the nearest star and back at 90% of light speed while your twin stays home.',
+    lesson:
+      "This is the famous one. Moving very fast makes your clock tick slower than everyone else's. You don't feel it — your watch, your heartbeat and your birthdays all slow down together — but when you land, your twin is over five years older than you.",
   },
   'hail-mary': {
-    tagline: 'Hail Mary Cruise',
-    region: 'Deep Space',
+    emoji: '🛸',
+    title: 'Hail Mary cruise',
+    package: 'Hail Mary Deep-Space Cruise',
     hazard: 'EXTREME',
-    sticker: 'CAPTAIN\'S PICK',
-    blurb:
-      'Ten years of coasting at 0.92c, no stops. Every ten years back home passes as four on the ship. Bring a book. Bring a friend. Bring a new one, eventually.',
     palette: 'ember',
+    pitch: 'Ten years of coasting at 92% of light speed, from Project Hail Mary.',
+    lesson:
+      'Same rule as the twin paradox, slightly faster. At 92% of light speed, ten years back home squeeze into about four years on board.',
+  },
+  'millers-planet': {
+    emoji: '🌊',
+    title: "Miller's planet",
+    package: 'Gargantua Resort & Spa',
+    hazard: 'FATAL',
+    palette: 'void',
+    pitch: 'The ocean planet from Interstellar, where one hour equals seven years back on Earth.',
+    lesson:
+      "No speed involved here — this is gravity. The closer you sit to something enormously heavy, the slower your clock runs. Parked just above a giant black hole's edge, an hour for you is seven years for everyone else. (To pull this off, the planet would have to hover about 78 metres above the edge. Don't try it.)",
+  },
+  gps: {
+    emoji: '🛰️',
+    title: 'GPS satellite',
+    package: 'Low-Orbit Express',
+    hazard: 'SAFE',
+    palette: 'sky',
+    pitch: 'Ride along with the satellites that run the map on your phone.',
+    lesson:
+      "Two effects fight here. The satellite moves fast, which slows its clock. But it's also 20,000 km up where Earth's gravity is weaker, which speeds its clock up. Gravity wins. Engineers correct for exactly this every day — without the fix, your phone's map would drift about 10 km per day.",
+  },
+  iss: {
+    emoji: '🧑‍🚀',
+    title: 'Space station',
+    package: 'The Orbital Weekender',
+    hazard: 'CAUTION',
+    palette: 'sky',
+    pitch: 'A day aboard the International Space Station, 400 km up.',
+    lesson:
+      "Same tug-of-war as GPS, but the station is lower and faster, so this time speed wins. Astronauts actually age a tiny bit slower than people on the ground.",
+  },
+  'scott-kelly': {
+    emoji: '👯',
+    title: 'Scott Kelly’s year in space',
+    package: 'Year-Long Orbital Retreat',
+    hazard: 'CAUTION',
+    palette: 'dusk',
+    pitch: 'The real twin experiment: astronaut Scott Kelly spent 340 days in orbit while his twin Mark stayed on Earth.',
+    lesson:
+      'A real-life twin paradox. Scott came home a few thousandths of a second younger than his identical twin Mark. Tiny, but real — and exactly what the math predicts.',
+  },
+  flight: {
+    emoji: '✈️',
+    title: 'Long-haul flight',
+    package: 'Pacific Business Class',
+    hazard: 'SAFE',
+    palette: 'sun',
+    pitch: 'An 11-hour flight from San Francisco to Tokyo at 10 km up.',
+    lesson:
+      'Yes, even you do this. Flying fast slows your clock; being higher up speeds it up. At cruising altitude, height narrowly wins — you land a few billionths of a second older. In 1971, physicists flew atomic clocks around the world on airliners and measured exactly this.',
   },
 }
 
-const DEFAULT_COPY: BrochureCopy = {
-  tagline: 'Bespoke Expedition',
-  region: 'Unclassified',
+const CUSTOM_COPY: BrochureCopy = {
+  emoji: '🧭',
+  title: 'Your own trip',
+  package: 'Bespoke Expedition',
   hazard: 'CAUTION',
-  sticker: 'CUSTOM ORDER',
-  blurb: 'A one-of-one itinerary assembled at your request. Consult the solver for specifics.',
   palette: 'dusk',
+  pitch: 'A one-of-a-kind itinerary assembled at your request.',
+  lesson: '',
 }
 
-/** Returns the brochure copy for a scenario id, or a default if unknown. */
-export function getDestinationCopy(id: string): BrochureCopy {
-  return DESTINATIONS[id] ?? DEFAULT_COPY
+export function getDestinationCopy(id: string | null): BrochureCopy {
+  return (id && DESTINATIONS[id]) || CUSTOM_COPY
 }
 
-/** Palette → {background, ink, accent} for brochure card + stamp styling. */
-export const PALETTE_CLASSES: Record<
-  BrochureCopy['palette'],
-  {
-    card: string
-    band: string
-    stamp: string
-    accent: string
-  }
-> = {
-  sky: {
-    card: 'bg-[#e6ddc4] border-ink/20',
-    band: 'bg-stamp-blue text-paper-light',
-    stamp: 'text-stamp-blue',
-    accent: 'text-stamp-blue',
-  },
-  sun: {
-    card: 'bg-[#f0dfb6] border-ink/20',
-    band: 'bg-mustard-dark text-paper-light',
-    stamp: 'text-mustard-dark',
-    accent: 'text-mustard-dark',
-  },
-  dusk: {
-    card: 'bg-[#dcd2bc] border-ink/20',
-    band: 'bg-olive text-paper-light',
-    stamp: 'text-olive-dark',
-    accent: 'text-olive-dark',
-  },
-  ember: {
-    card: 'bg-[#ebcdad] border-ink/20',
-    band: 'bg-terracotta text-paper-light',
-    stamp: 'text-terracotta-dark',
-    accent: 'text-terracotta-dark',
-  },
-  void: {
-    card: 'bg-[#c9b7a0] border-ink/40',
-    band: 'bg-ink text-paper-light',
-    stamp: 'text-ink',
-    accent: 'text-ink',
-  },
+/** Palette → classes for brochure cards. */
+export const PALETTE_CLASSES: Record<Palette, { band: string; accent: string }> = {
+  sky: { band: 'bg-stamp-blue text-paper-light', accent: 'text-stamp-blue' },
+  sun: { band: 'bg-mustard-dark text-paper-light', accent: 'text-mustard-dark' },
+  dusk: { band: 'bg-olive text-paper-light', accent: 'text-olive-dark' },
+  ember: { band: 'bg-terracotta text-paper-light', accent: 'text-terracotta-dark' },
+  void: { band: 'bg-ink text-paper-light', accent: 'text-ink' },
 }
 
-/** Hazard → small colored badge classes. */
-export const HAZARD_CLASSES: Record<BrochureCopy['hazard'], string> = {
+export const HAZARD_CLASSES: Record<Hazard, string> = {
   SAFE: 'text-stamp-green border-stamp-green',
   CAUTION: 'text-mustard-dark border-mustard-dark',
   EXTREME: 'text-terracotta border-terracotta',
