@@ -188,3 +188,40 @@ export function moonTripAt(velocity: Scalar): string | null {
   if (v.isZero()) return null
   return durationText(MOON_DISTANCE.div(v))
 }
+
+const BOARD_UNITS: readonly [Decimal, string, string][] = [
+  [JULIAN_YEAR_SECONDS, 'YR', 'YRS'],
+  [DAY_SECONDS, 'DAY', 'DAYS'],
+  [new Decimal(3600), 'HR', 'HRS'],
+  [new Decimal(60), 'MIN', 'MIN'],
+  [new Decimal(1), 'SEC', 'SEC'],
+  [new Decimal('1e-3'), 'MILLISEC', 'MILLISEC'],
+  [new Decimal('1e-6'), 'MICROSEC', 'MICROSEC'],
+  [new Decimal('1e-9'), 'NANOSEC', 'NANOSEC'],
+  [new Decimal('1e-12'), 'PICOSEC', 'PICOSEC'],
+]
+
+/**
+ * Departures-board shorthand: upper case, 3 significant figures, at most 13
+ * characters. 3.06e8 s → "9.71 YRS", 3.85e-5 s → "38.5 MICROSEC".
+ */
+export function boardDuration(seconds: Scalar): string {
+  const s = d(seconds).abs()
+  if (s.isZero()) return 'NONE'
+  const t = s.times('1.001')
+  for (const [size, one, many] of BOARD_UNITS) {
+    if (t.gte(size)) {
+      const n = s.div(size).toNumber()
+      const shown =
+        n >= 1e9
+          ? `${trim((n / 1e9).toPrecision(3))}B`
+          : n >= 1e6
+            ? `${trim((n / 1e6).toPrecision(3))}M`
+            : n >= 1000
+              ? Math.round(n).toLocaleString('en-US')
+              : trim(n.toPrecision(3))
+      return `${shown} ${shown === '1' ? one : many}`
+    }
+  }
+  return '< 1 PICOSEC'
+}

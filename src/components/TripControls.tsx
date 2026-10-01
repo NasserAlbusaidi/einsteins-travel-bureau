@@ -1,11 +1,11 @@
-import Decimal from 'decimal.js'
 import { useStore } from '../store'
 import { BODY_IDS, getBody } from '../physics/bodies'
 import { heightOf } from '../trip'
-import { durationScale, logScale, speedScale } from '../scales'
+import { durationScale, heightScale, speedScale } from '../scales'
 import { DURATION_LANDMARKS, PLACES, SPEED_LANDMARKS } from '../copy/places'
 import { durationText, humanDistance, humanSpeed, moonTripAt } from '../humanize'
 import { ScaleSlider } from './ScaleSlider'
+import { BodyGlyph } from './art/Bodies'
 
 /** The four knobs: how fast, near what, how high, how long. */
 export function TripControls() {
@@ -19,19 +19,10 @@ export function TripControls() {
   const place = PLACES[trip.place]
   const height = heightOf(trip)
   const isHole = body.kind === 'black-hole'
-  // Black holes have no surface to stand on, so the height slider starts at 1 m.
-  const heightScale = logScale(new Decimal(1), body.maxHeight, isHole ? 0 : 0.03)
   const moon = moonTripAt(trip.speed)
 
   return (
-    <div className="paper-card p-5 sm:p-6 flex flex-col gap-7">
-      <div>
-        <h3 className="font-display text-2xl text-ink">Adjust the trip</h3>
-        <p className="text-ink-light mt-1">
-          Drag anything. The boarding pass updates instantly.
-        </p>
-      </div>
-
+    <div className="panel p-5 sm:p-7 flex flex-col gap-8">
       <Step n={1} title="How fast are you going?">
         <ScaleSlider
           label="Speed"
@@ -39,15 +30,14 @@ export function TripControls() {
           scale={speedScale}
           onChange={setSpeed}
           readout={capitalise(humanSpeed(trip.speed))}
-          hint={moon ? `At this speed you'd reach the Moon in ${moon}.` : 'Not moving at all.'}
+          hint={moon ? `Fast enough to reach the Moon in ${moon}.` : 'Not moving at all.'}
           landmarks={SPEED_LANDMARKS}
         />
       </Step>
 
       <Step n={2} title="What are you near?">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" role="radiogroup" aria-label="Place">
+        <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5 sm:gap-2" role="radiogroup" aria-label="Place">
           {BODY_IDS.map((id) => {
-            const p = PLACES[id]
             const active = id === trip.place
             return (
               <button
@@ -58,25 +48,23 @@ export function TripControls() {
                 onClick={() => setPlace(id)}
                 className={`place-tile ${active ? 'place-tile-active' : ''}`}
               >
-                <span className="text-2xl leading-none" aria-hidden>
-                  {p.emoji}
-                </span>
-                <span className="text-sm font-semibold leading-tight">{p.name}</span>
+                <BodyGlyph id={id} size={40} />
+                <span className="text-[11px] sm:text-xs font-medium leading-tight">{PLACES[id].name}</span>
               </button>
             )
           })}
         </div>
-        <p className="text-sm text-ink-light">{place.blurb}</p>
+        <p className="text-sm text-mist-300">{place.blurb}</p>
         {body.kind !== 'empty' ? (
           <ScaleSlider
             label={place.heightLabel}
             value={height}
-            scale={heightScale}
+            scale={heightScale(body)}
             onChange={setHeight}
             readout={height.isZero() ? 'On the surface' : humanDistance(height)}
             hint={
               isHole
-                ? `The edge itself is ${humanDistance(body.floorRadius)} from the centre. Get closer, and time slows to a crawl.`
+                ? `The edge itself is ${humanDistance(body.floorRadius)} from the centre. Get closer and time slows to a crawl.`
                 : undefined
             }
             landmarks={place.heightLandmarks}
@@ -101,11 +89,14 @@ export function TripControls() {
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
     <fieldset className="flex flex-col gap-3 min-w-0">
-      <legend className="flex items-center gap-2.5 mb-3">
-        <span className="step-dot" aria-hidden>
+      <legend className="flex items-center gap-3 mb-3">
+        <span
+          className="grid place-items-center w-8 h-8 rounded-full ring-1 ring-gold/60 font-display text-gold-300 text-lg"
+          aria-hidden
+        >
           {n}
         </span>
-        <span className="font-display text-xl text-ink">{title}</span>
+        <span className="font-display text-2xl text-cream">{title}</span>
       </legend>
       {children}
     </fieldset>

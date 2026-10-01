@@ -1,26 +1,25 @@
 interface Props {
   children: React.ReactNode
-  color?: 'red' | 'blue' | 'green' | 'ink' | 'terracotta' | 'mustard'
+  color?: 'red' | 'you' | 'home' | 'gold' | 'ink'
   rotate?: number
   className?: string
   animate?: boolean
 }
 
-const COLOR_CLASSES: Record<NonNullable<Props['color']>, string> = {
-  red: 'text-stamp-red border-stamp-red',
-  blue: 'text-stamp-blue border-stamp-blue',
-  green: 'text-stamp-green border-stamp-green',
-  ink: 'text-ink border-ink',
-  terracotta: 'text-terracotta-dark border-terracotta-dark',
-  mustard: 'text-mustard-dark border-mustard-dark',
+const COLORS: Record<NonNullable<Props['color']>, string> = {
+  red: '#b3261e',
+  you: '#c2471f',
+  home: '#13786d',
+  gold: '#8c6820',
+  ink: '#161a33',
 }
 
-/** Rubber stamp: bordered, rotated, uppercase. For verdicts and hazard ratings. */
+/** Rubber stamp: inked border, uneven coverage, slammed down at an angle. */
 export function Stamp({ children, color = 'red', rotate = -6, className = '', animate = false }: Props) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 font-display uppercase tracking-widest text-[11px] border-2 rounded-sm whitespace-nowrap ${COLOR_CLASSES[color]} ${animate ? 'stamp-animate' : ''} ${className}`}
-      style={{ transform: `rotate(${rotate}deg)`, opacity: 0.92 }}
+      className={`stamp ${animate ? 'stamp-animate' : ''} ${className}`}
+      style={{ color: COLORS[color], transform: `rotate(${rotate}deg)`, '--rot': `${rotate}deg` } as React.CSSProperties}
     >
       {children}
     </span>

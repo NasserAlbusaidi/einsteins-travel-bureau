@@ -10,7 +10,7 @@ interface Props {
   onChange: (value: Decimal) => void
   /** Big readout, e.g. "27,576 km/h". */
   readout: string
-  /** Small line under the readout, e.g. "Earth to the Moon in 14 hours". */
+  /** Small line under the slider, e.g. "Earth to the Moon in 14 hours". */
   hint?: string | undefined
   landmarks?: readonly Landmark[]
 }
@@ -25,26 +25,28 @@ export function ScaleSlider({ label, value, scale, onChange, readout, hint, land
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-baseline justify-between gap-3 flex-wrap">
-        <label htmlFor={id} className="font-semibold text-ink">
+        <label htmlFor={id} className="text-sm font-medium text-mist-300">
           {label}
         </label>
-        <output htmlFor={id} className="font-display text-xl text-terracotta-dark tabular-nums">
+        <output htmlFor={id} className="font-display text-2xl text-cream tabular-nums leading-none">
           {readout}
         </output>
       </div>
       <input
         id={id}
         type="range"
+        className="dial"
         min={0}
         max={STEPS}
         step={1}
         value={pos}
         onChange={(e) => onChange(scale.fromPos(Number(e.target.value) / STEPS))}
         aria-valuetext={readout}
+        style={{ '--fill': `${(pos / STEPS) * 100}%` } as React.CSSProperties}
       />
-      {hint ? <p className="text-sm text-ink-light -mt-1">{hint}</p> : null}
+      {hint ? <p className="text-sm text-mist-400 -mt-1">{hint}</p> : null}
       {landmarks && landmarks.length > 0 ? (
-        <div className="flex flex-wrap gap-1.5" role="group" aria-label={`${label} presets`}>
+        <div className="flex flex-wrap gap-1.5 mt-0.5" role="group" aria-label={`${label}: quick picks`}>
           {landmarks.map((l) => {
             const active = isClose(value, l.value)
             return (
