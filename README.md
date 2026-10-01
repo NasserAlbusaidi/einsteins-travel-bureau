@@ -5,108 +5,104 @@
 
 # Einstein's Travel Bureau
 
-> Relativistic Itineraries & Bespoke Expeditions.
-> Licensed since 1905 · Lightspeed never exceeded, always approached.
+> Travel into the future. It's real.
+> Licensed since 1905 · Lightspeed never exceeded.
 
-![The Bureau Wall-Map — atlas of relativistic itineraries with destination cards](docs/hero.png)
+![Einstein's Travel Bureau — hero](docs/hero.png)
 
-A high-precision time-dilation sandbox disguised as a vintage cosmic travel agency. Every control is a booking form. Every result is a boarding pass. The real physics lives one click away under **How the Trip Was Calculated**.
+A vintage travel agency that sells trips into the future. Pick a trip — a long-haul flight, the space station, a black hole — and the bureau tells you, in plain English, how much younger (or older) you'd come back, and why.
 
-Built with Vite · React 19 · TypeScript · Tailwind · decimal.js at 50-digit precision.
+No physics background needed. Every number still comes from Einstein's actual equations, computed at 50-digit precision, and the full working is one click away under **Show the math**.
+
+![Adjusting a trip and reading the boarding pass](docs/trip.png)
+
+## How it works (for visitors)
+
+1. **Learn the two rules.** Moving fast slows your clock. Being near something heavy slows your clock. That's it.
+2. **Pick a trip.** Seven real scenarios, from a San Francisco → Tokyo flight to Miller's planet in *Interstellar*.
+3. **Adjust it.** Four plain controls: how fast (in km/h or % of light speed, with landmarks like "airliner" and "99% light"), what you're near (Earth, the Sun, a white dwarf, a neutron star, two black holes), how high up, and for how long.
+4. **Read your boarding pass.**
+   - The headline: *"You aged 4.23 years. Home aged 9.71 years."* — or for tiny effects, *"Your clock ends up 38.4 microseconds ahead of home."*
+   - The aging race: two bars that grow at the two clocks' real relative rates.
+   - **Why?** The result split into the speed part and the gravity part (e.g. GPS: speed loses 7.2 μs/day, altitude gains 45.7 μs/day, gravity wins).
+   - What you missed while you were away, and a shareable link.
+5. **Time machine.** Run it backwards: "I want to reach the year 3000 while only aging 1 year." You get two ways there — cruise at 99.999947% of light speed, or hover 311 km above Gargantua's edge — each bookable with one click.
+6. **FAQ.** Is this real? Why does speed slow time? Can I go back? Why can't I go faster than light?
 
 ## Run it
 
 ```bash
 npm install
 npm run dev        # → http://localhost:5173/einsteins-travel-bureau/
+npm run lint
 npm run typecheck
-npm test           # 68 physics tests
+npm test
 npm run build
 ```
-
-## What you can do
-
-**Book a preset trip.** Seven curated destinations — GPS orbit, the ISS, a Pacific flight, twin paradox to Alpha Centauri, Miller's planet, Hail Mary at 0.92c, Scott Kelly's year in orbit. Each one is a real, tested physical scenario.
-
-**Tweak any parameter.** Every slider on the booking form is live. Adjust velocity, altitude, gravity well, or trip duration — the trip report recomputes on every keystroke.
-
-**Drag the spacetime diagram.** The traveler's worldline endpoint is a handle. Grab it, slide it horizontally, watch velocity change everywhere in sync. Works on mouse and touch.
-
-**Fork a trip.** Any configuration can be frozen into a fork. Keep tweaking the live itinerary while a second column shows the snapshot you walked away from — plus a **Δ of Δ** readout telling you exactly how much your changes moved the outcome.
-
-**Share a link.** The full state lives in the URL hash. Copy-paste the address, send it to anyone, and they open to the same configuration. "Stamp & Share" in the boarding pass header does the copying for you.
-
-**Design your own.** Dial in any settings you like, then the "Design Your Own" card in the destination grid captures them as a named brochure with your chosen hazard level and palette. Saved to localStorage, reusable across sessions.
-
-**Run the Laboratory.** Section V is a multi-observer workbench: place 1–5 observers in a common gravity well, each with their own velocity/radius sliders, watch an animated clock race and a proper-time bar chart show how their wristwatches diverge. No trip, no destination — pure physics playground.
-
-**Solve backwards.** The Custom Itinerary Builder takes "1 of my years = X years back home" and hands you two ways to get there: cruise at a specific speed, or loiter at a specific altitude above a chosen mass.
 
 ## What's inside
 
 ```
 src/
-├── physics/                  ← the science (don't touch this for UI work)
-│   ├── constants.ts          CODATA 2018 + IAU 2015 constants
-│   ├── relativity.ts         γ, Schwarzschild radius, combined dilation
-│   ├── scenarios.ts          7 real-world scenarios
-│   ├── solver.ts             closed-form inverse: "I want ratio X, find v or r"
-│   └── *.test.ts             68 tests across 3 files
+├── physics/              ← the science. Knows nothing about the UI.
+│   ├── constants.ts      CODATA 2018 + IAU 2015 constants
+│   ├── relativity.ts     γ, Schwarzschild radius, combined dilation
+│   ├── effects.ts        exact split of a result into speed vs. gravity
+│   ├── bodies.ts         Earth, Sun, Sirius B, a neutron star, Sgr A*, Gargantua
+│   ├── scenarios.ts      the 7 real-world scenarios
+│   └── solver.ts         inverse: "I want ratio X, find v or r"
 │
-├── copy/                     ← travel-bureau narrative layer
-│   ├── destinations.ts       brochure blurbs + palette per scenario
-│   └── funFacts.ts           delta-seconds → "you missed X World Cups"
+├── trip.ts               the 4-knob trip model ↔ two-observer physics, URL hash codec
+├── scales.ts             slider scales (log, and a "nines of light speed" scale)
+├── humanize.ts           plain-English formatting: "38.4 microseconds", "90% of light speed"
+├── format.ts             SI formatting for the math drawer
+├── store.ts              zustand store, synced to the URL hash
 │
-├── components/               ← presentation layer
-│   ├── SpaceMap.tsx            vintage wall-chart of all destinations
-│   ├── DestinationPicker.tsx   brochure grid + "Design Your Own" card
-│   ├── BookingForm.tsx         reskinned sliders
-│   ├── TripReport.tsx          boarding pass, headline, fun facts, share/fork
-│   ├── MathDrawer.tsx          collapsible: real formulas, real values
-│   ├── CustomItinerary.tsx     solver as "Cruise Package vs. Gravity Resort"
-│   ├── Laboratory.tsx          multi-observer workbench + clock race
-│   ├── SpacetimeDiagram.tsx    SVG worldlines, paper-theme, draggable handle
-│   ├── AgeChart.tsx            recharts aging timeline
-│   ├── GammaReadout.tsx        γ coefficient card
-│   ├── DominantBadge.tsx       stamp: Speed/Gravity/Balanced
-│   ├── Stamp.tsx               reusable rubber-stamp component
-│   └── LogSlider.tsx           log-scale Decimal slider
+├── copy/                 ← words, not physics
+│   ├── destinations.ts   brochure copy + "what's going on here" per trip
+│   ├── places.ts         places, landmarks for every slider
+│   └── funFacts.ts       "1 World Cup played without you"
 │
-├── customBrochures.ts        localStorage store for user-designed brochures
-├── format.ts                 human-readable formatters (γ, time, mass, …)
-├── store.ts                  zustand + URL hash sync
-├── App.tsx                   bureau layout: map → picker → booking → lab
-└── index.css                 paper-grain background, stamps, range inputs
+└── components/
+    ├── HowItWorks.tsx    the two rules + "is this real?"
+    ├── TripPicker.tsx    brochure cards + build-your-own
+    ├── TripControls.tsx  speed / place / height / duration
+    ├── BoardingPass.tsx  headline, aging race, why, fun facts, share
+    ├── MathDrawer.tsx    the real equations and every intermediate value
+    ├── TimeMachine.tsx   the solver as "book a ticket to year X"
+    └── Faq.tsx
 ```
 
 ## Design contract
 
-**Two layers, clean seam.** The `physics/` folder knows nothing about travel agencies. The `copy/` and `components/` folders can be reskinned without touching a single formula. Change the theme, change the narrative — the numbers never move.
+**Plain English first, receipts on request.** Every visible number is in units people know (km/h, % of light speed, minutes, years, "millionths of a second"). γ, β, r_s and τ live in the math drawer.
 
-**Hard science stays visible.** The math drawer on every trip report exposes γ, β, r_s, the combined τ ratio equation, and every intermediate Decimal. No hand-waving. No rounding away the interesting bits — including a `formatGamma` that surfaces "1 + 3.336e-10" instead of flattening everyday speeds to "1.000000".
+**Two layers, clean seam.** `physics/` has zero React imports and its own tests. Everything else can be reskinned without moving a number.
 
-**Headline adapts to the effect.**
-- Big effect (twin paradox): *"You aged 4.233 years. Home aged 9.711 years."*
-- Small effect (GPS, ISS): *"After 1 day, your clock runs 38.44 μs ahead of home."*
+**"Home" is derived, not configured.** Earth trips compare against someone standing on the ground. Everything else compares against someone far from any mass (Earth's own pull would change those results by less than a billionth). That removes a whole column of confusing controls.
 
-The switch happens when both values render to the same string at display precision.
+**Precision where it matters.** decimal.js at 50 digits, because float64 rounds `1 − v²/c²` to exactly 1 for anything slower than ~100 m/s — which would erase the flight, the ISS and GPS.
 
-**URL is the source of truth.** Any observable parameter change writes to `window.location.hash`. On load, the hash hydrates the store. Back/forward navigation works. Shareable deep-links include custom brochures.
+**Every trip is a link.** Untouched presets encode as `#trip=gps`; custom trips as `#v=…&at=earth&h=…&t=…`. Old `#s=<preset>` links still work.
 
 ## Scenarios
 
-| id | package | hazard | expected |
-|---|---|---|---|
-| `gps` | Low-Orbit Express | SAFE | +38 μs/day (satellite runs fast) |
-| `iss` | Orbital Weekender | CAUTION | −25 μs/day (astronaut loses time) |
-| `scott-kelly` | Year-Long Orbital Retreat | CAUTION | −8 ms over 340 days |
-| `flight` | Pacific Business Class | SAFE | +tens of ns on SF→Tokyo |
-| `twin-paradox` | Alpha Centauri Round-Trip | EXTREME | 4.23 yr younger after 9.71 yr home |
-| `millers-planet` | Gargantua Resort & Spa | FATAL | 1 hr there = 7 yr outside |
-| `hail-mary` | Hail Mary Cruise | EXTREME | 3.92 yr per 10 Earth years at 0.92c |
+| id | trip | result |
+|---|---|---|
+| `twin-paradox` | Alpha Centauri and back at 0.9c | you age 4.23 yr, home ages 9.71 yr |
+| `hail-mary` | 10 years at 0.92c | you age 3.92 yr |
+| `millers-planet` | parked 78 m above Gargantua's horizon | 1 hour there = 7 years outside |
+| `gps` | GPS orbit | +38.4 μs per day (gravity wins) |
+| `iss` | International Space Station | −24.6 μs per day (speed wins) |
+| `scott-kelly` | 340 days on the ISS | −8.4 ms |
+| `flight` | SF → Tokyo, 11 h at 10 km | +29 ns (altitude narrowly wins) |
 
-Add one by appending to `SCENARIOS` in `physics/scenarios.ts` *and* `DESTINATIONS` in `copy/destinations.ts`.
+Add one by appending to `SCENARIOS` in `physics/scenarios.ts` *and* `DESTINATIONS` in `copy/destinations.ts`. Its gravitating body must be one of `physics/bodies.ts`.
+
+## Simplifications
+
+Accelerating, decelerating and turning around are treated as instantaneous. The bureau doesn't check whether a speed is the right one to stay in orbit. Black holes are non-rotating. None of these change the headline numbers for the presets.
 
 ## Status
 
-Playground. Physics is real; UI is for fun. No refunds beyond the event horizon.
+Playground. Physics is real; the bureau is not. No refunds beyond the event horizon.

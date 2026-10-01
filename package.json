@@ -1,5 +1,5 @@
 {
-  "name": "relativity",
+  "name": "einsteins-travel-bureau",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,7 +17,6 @@
     "decimal.js": "^10.6.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "recharts": "^3.8.1",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

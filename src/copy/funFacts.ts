@@ -96,23 +96,23 @@ export function funFactsForMiss(missedSeconds: Decimal): FunFact[] {
   const years = abs.div(JULIAN_YEAR_SECONDS).toNumber()
 
   if (years < 5) {
-    facts.push({ icon: '🥂', text: `${formatCount(years)} New Year's Eves celebrated without you.` })
-    facts.push({ icon: '🏆', text: `${formatCount(years / 2)} Olympic Games opened and closed.` })
-    facts.push({ icon: '📱', text: `${formatCount(years)} new iPhones were announced.` })
-    facts.push({ icon: '🐕', text: `Your dog aged ${formatCount(years * 7)} dog-years.` })
+    facts.push(countFact('🥂', years, "New Year's Eve", "New Year's Eves", 'celebrated without you'))
+    facts.push(countFact('📱', years, 'new iPhone', 'new iPhones', 'announced'))
+    facts.push({ icon: '🐕', text: `Your dog aged about ${formatCount(years * 7)} dog-years.` })
+    if (years >= 2) facts.push(countFact('🏅', years / 2, 'Olympic Games', 'Olympic Games', 'held'))
     return facts
   }
 
   if (years < 50) {
-    facts.push({ icon: '⚽', text: `${formatCount(years / 4)} World Cups you weren't at.` })
-    facts.push({ icon: '🏛', text: `${formatCount(years / 4)} U.S. presidential elections decided.` })
-    facts.push({ icon: '💍', text: `${formatCount(years / 10)} decade-anniversary parties missed.` })
+    facts.push(countFact('⚽', years / 4, 'World Cup', 'World Cups', 'played without you'))
+    facts.push(countFact('🗳', years / 4, 'U.S. presidential election', 'U.S. presidential elections', 'decided'))
     facts.push({
       icon: '🎂',
       text: missedMore
-        ? `Your friends had ${formatCount(years)} fewer birthdays than you.`
-        : `Your friends had ${formatCount(years)} birthdays you weren't invited to.`,
+        ? `You had ${Math.floor(years)} more birthdays than your friends.`
+        : `Your friends had ${Math.floor(years)} birthdays you missed.`,
     })
+    if (years >= 10) facts.push(countFact('📺', years / 10, 'decade of TV', 'decades of TV', 'you never saw'))
     return facts
   }
 
@@ -142,6 +142,13 @@ export function funFactsForMiss(missedSeconds: Decimal): FunFact[] {
   facts.push({ icon: '🦖', text: 'Geological epochs have turned over.' })
   facts.push({ icon: '🌌', text: 'The stars in your sky are in subtly different places.' })
   return facts
+}
+
+/** "3 World Cups played without you" — whole events only, never "1.4 World Cups". */
+function countFact(icon: string, n: number, one: string, many: string, tail: string): FunFact {
+  const k = Math.floor(n)
+  if (k < 1) return { icon, text: `Almost a whole ${one} ${tail}.` }
+  return { icon, text: `${k.toLocaleString('en-US')} ${k === 1 ? one : many} ${tail}.` }
 }
 
 /** Friendly formatting — 1 decimal, with thousand separators for big numbers. */

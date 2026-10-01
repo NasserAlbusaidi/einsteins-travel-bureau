@@ -92,7 +92,7 @@ export function solveForRatio(input: SolveForRatioInput): SolveForRatioResult {
   const r = toDecimal(input.ratio)
   const M = toDecimal(input.mass)
 
-  let velocity: Decimal | null = null
+  let velocity: Decimal | null
   try {
     velocity = solveVelocityForRatio(r)
   } catch {
